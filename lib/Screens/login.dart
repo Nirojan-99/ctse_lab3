@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:recipe_app/Screens/recipe_list.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -8,21 +10,46 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  String _errorMessage = '';
+
+//login
+  Future<void> _login() async {
+    try {
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const RecipeList()),
+        );
+      }
+    } on FirebaseAuthException catch (e) {
+      setState(() {
+        _errorMessage = e.message!;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final double height = MediaQuery.of(context).size.height;
+    AppBar appBar = AppBar(
+      title: const Text(
+        "Login",
+      ),
+    );
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          "Login",
-        ),
-      ),
+      appBar: appBar,
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+          margin: const EdgeInsets.only(top: 30),
           width: double.infinity,
-          height: height,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,11 +66,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     color: Colors.white,
                     fontWeight: FontWeight.w700,
                     fontSize: 16),
-                // controller: _controller,
+                controller: _emailController,
                 cursorColor: Colors.white,
                 maxLines: 1,
                 decoration: InputDecoration(
-                    // label: Text('Task'),
                     contentPadding:
                         const EdgeInsets.symmetric(vertical: 7, horizontal: 10),
                     border: OutlineInputBorder(
@@ -68,11 +94,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     color: Colors.white,
                     fontWeight: FontWeight.w700,
                     fontSize: 16),
-                // controller: _controller,
+                controller: _passwordController,
                 cursorColor: Colors.white,
                 maxLines: 1,
                 decoration: InputDecoration(
-                    // label: Text('Task'),
                     contentPadding:
                         const EdgeInsets.symmetric(vertical: 7, horizontal: 10),
                     border: OutlineInputBorder(
@@ -87,10 +112,37 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  style: const ButtonStyle(),
                   onPressed: () {},
-                  child: const Text("Login"),
+                  child: const Text(
+                    "Login",
+                    style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
+                  ),
                 ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Container(),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed("register");
+                    },
+                    child: const Text(
+                      "Don't have account?",
+                      textAlign: TextAlign.end,
+                    ),
+                  ),
+                  SizedBox(
+                    child: Text(
+                      _errorMessage.toString(),
+                      style: const TextStyle(color: Colors.red),
+                    ),
+                  )
+                ],
               )
             ],
           ),
