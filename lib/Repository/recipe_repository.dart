@@ -6,9 +6,10 @@ class RecipeRepository {
       FirebaseFirestore.instance.collection('recipe');
 
   Stream<List<Recipe>> recipe() {
-    return _collection.snapshots().map((snapshot) => snapshot.docs
-        .map((doc) => Recipe.fromMap(doc.data() as Map<String, dynamic>))
-        .toList());
+    return _collection.where("title", isNull: false).snapshots().map(
+        (snapshot) => snapshot.docs
+            .map((doc) => Recipe.fromMap(doc.data() as Map<String, dynamic>))
+            .toList());
   }
 
   Future<void> addRecipe(Recipe recipe) async {

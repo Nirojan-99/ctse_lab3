@@ -21,19 +21,22 @@ class _RecipeListState extends State<RecipeList> {
 
   @override
   void initState() {
-    fetchRecipe();
     super.initState();
+    fetchRecipe();
   }
 
+  late Recipe recipe;
   _addRecipe() {
-    Recipe recipe;
     if (_titleController.text == '' || _descriptionController.text == null) {
       Navigator.of(context).pop();
     } else {
       recipe = Recipe(_titleController.text, _descriptionController.text);
-      _recipeRepo.addRecipe(recipe).then((value) {});
+      recipe.ingredients = <String>[];
       Navigator.of(context).pop();
     }
+    _recipeRepo.addRecipe(recipe).then((value) {
+      fetchRecipe();
+    });
     _titleController.text = '';
     _descriptionController.text = '';
   }

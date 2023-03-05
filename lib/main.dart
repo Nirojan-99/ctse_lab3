@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
         "/recipes": (context) => const RecipeList(),
         "/recipe": (context) => const RecipeDetails(),
       },
-      home: const LoginScreen(),
+      home: const RecipeList(),
     );
   }
 }

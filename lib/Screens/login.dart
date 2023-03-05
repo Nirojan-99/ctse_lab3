@@ -112,7 +112,9 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    _login();
+                  },
                   child: const Text(
                     "Login",
                     style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
@@ -129,20 +131,20 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   TextButton(
                     onPressed: () {
-                      Navigator.of(context).pushNamed("register");
+                      Navigator.pushNamed(context, '/register');
                     },
                     child: const Text(
                       "Don't have account?",
                       textAlign: TextAlign.end,
                     ),
                   ),
-                  SizedBox(
-                    child: Text(
-                      _errorMessage.toString(),
-                      style: const TextStyle(color: Colors.red),
-                    ),
-                  )
                 ],
+              ),
+              SizedBox(
+                child: Text(
+                  _errorMessage.toString(),
+                  style: const TextStyle(color: Colors.red),
+                ),
               )
             ],
           ),

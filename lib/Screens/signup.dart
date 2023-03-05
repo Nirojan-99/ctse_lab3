@@ -111,7 +111,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    _register();
+                  },
                   child: const Text(
                     "Register",
                     style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
@@ -128,7 +130,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                   TextButton(
                     onPressed: () {
-                      Navigator.of(context).pushNamed("login");
+                      Navigator.pushNamed(context, '/login');
                     },
                     child: const Text(
                       "Login",
